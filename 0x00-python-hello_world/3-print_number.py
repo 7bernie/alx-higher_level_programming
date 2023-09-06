@@ -1,3 +1,3 @@
-#!/usr/bin/python
-def magic_calculation(a, b):
-    return 98 ** a + b
+#!/usr/bin/python3
+number = 98
+print(f"{number:d} Battery street")
