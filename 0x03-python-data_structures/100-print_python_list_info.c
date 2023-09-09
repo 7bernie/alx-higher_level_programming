@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 #include <stdlib.h>
 #include <stdio.h>
 #include <python.h>
+=======
+nclude <stdio.h>
+#include <Python.h>
+>>>>>>> f32d3b9cc935d328965e2ea8a14dc147979603e5
 
 /**
  * print_python_list_info - print info about a Python list.
