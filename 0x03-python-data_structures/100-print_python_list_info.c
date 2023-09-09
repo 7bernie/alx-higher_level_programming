@@ -1,37 +1,26 @@
-#include "lists.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <Python.h>
 /**
- * PalindromeRecur - Check if linked list is palindrome.
- * @left: Head of list
- * @right: Last element take it in recursion.
+ * print_python_list_info - Print some basic info about Python lists
+ * @p: PyObject
+ *
+ * Return: Nothing
  */
-int PalindromeRecur(listint_t **left, listint_t *right)
+void print_python_list_info(PyObject *p)
 {
-	int pal;
+PyObject *item;
+PyListObject *list = (PyListObject *)p;
+int i, size, alloc;
 
-	if (right == NULL)
-		return (1);
+size = Py_SIZE(p);
+alloc = list->allocated;
+printf("[*] Size of the Python List = %d\n", size);
+printf("[*] Allocated = %d\n", alloc);
 
-	pal = PalindromeRecur(left, right->next);
-	if (pal == 0)
-		return (0);
-
-	pal = (right->n == (*left)->n);
-
-	*left = (*left)->next;
-	return (pal);
+for (i = 0; i < size; i++)
+{
+item =  PyList_GetItem(p, i);
+printf("Element %d: %s\n", i, Py_TYPE(item)->tp_name);
 }
-
-/**
- * is_palindrome - Check if linked list is palindrome.
- * @head: give list
- * @right: Last element take it in recursion.
- */
-int is_palindrome(listint_t **head)
-{
-	int res;
-
-	if (!head)
-		return (0);
-	res = PalindromeRecur(head, *head);
-	return (res);
 }
