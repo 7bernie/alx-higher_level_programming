@@ -1,34 +1,61 @@
-The ``0-print_square`` module
-=============================
-
-Using the ``print_square`` function
------------------------------------
-
+Import module
 >>> print_square = __import__('4-print_square').print_square
->>> print_square(3)
-###
-###
-###
->>> print_square(6)
-######
-######
-######
-######
-######
-######
+
+Tests cases:
+===========
+
+T1 -- passing zero arguments.
+>>> print_square()
+Traceback (most recent call last):
+...
+TypeError: print_square() missing 1 required positional argument: 'size'
+
+T2 -- passing a int number
+>>> print_square(4)
+####
+####
+####
+####
+
+T3 -- passing float number
+>>> print_square(4.5)
+Traceback (most recent call last):
+...
+TypeError: size must be an integer
+
+T4 -- passing zero argument.
 >>> print_square(0)
-<BLANKLINE>
+
+T5 -- passing negative number.
+>>> print_square(-4)
+Traceback (most recent call last):
+...
+ValueError: size must be >= 0
+
+T6 -- passing None as argument.
+>>> print_square(None)
+Traceback (most recent call last):
+...
+TypeError: size must be an integer
+
+T7 -- passing one number as argument.
 >>> print_square(1)
 #
->>> print_square(-1)
+
+T8 -- passing infinity number.
+>>> print_square(float("inf"))
 Traceback (most recent call last):
-	...
-ValueError: size must be >= 0
->>> print_square("")
-Traceback (most recent call last):
-	...
+...
 TypeError: size must be an integer
->>> print_square(2.5)
+
+T9 -- passing a string as argument
+>>> print_square("10")
 Traceback (most recent call last):
-	...
+...
 TypeError: size must be an integer
+
+T10 -- passing more than one argument
+>>> print_square(4, 5)
+Traceback (most recent call last):
+...
+TypeError: print_square() takes 1 positional argument but 2 were given
