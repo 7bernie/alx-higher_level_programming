@@ -1,70 +1,145 @@
-# run test with python3 -m doctest -v ./tests/100-matrix_mul.txt
+# The ``100-matrix_mul`` module
+============================================
+How to use 100-matrix_mul.py
+============================================
 
-First import method to test
->>> matrix_mul = __import__('100-matrix_mul').matrix_mul
+This library has one function called ``matrix_mul()``
 
-SUCCESS CASES:
+``matrix_mul()`` multiplies 2 matrices.
 
-Test signed and unsigned ints and floats in same size lists in list matrix:
-     >>> m_a = [[1, 2], [3, 4]]
-     >>> m_b = [[2, 0], [1, 2]]
-     >>> print(matrix_mul(m_a, m_b))
-     [[4, 4], [10, 8]]
+Importing the function matrix_mul.
+    >>> matrix_mul = __import__('100-matrix_mul').matrix_mul
 
-     >>> m_a = [[-2.0, -3.0]]
-     >>> m_b = [[-2.0], [-4.0]]
-     >>> print(matrix_mul(m_a, m_b))
-     [[16.0]]
+Passing matrices.
+    >>> m_a = [[1, 2], [3, 4]]
+    >>> m_b = [[5, 6], [7, 8]]
+    >>> matrix_mul(m_a, m_b)
+    [[19, 22], [43, 50]]
 
-FAIL CASES:
+    >>> m_a = [[1, 2]]
+    >>> m_b = [[3, 4], [5, 6]]
+    >>> matrix_mul(m_a, m_b)
+    [[13, 16]]
 
-Test empty matrix:
-     >>> m_a = []
-     >>> m_b = [[2, 0], [1, 2]]
-     >>> print(matrix_mul(m_a, m_b))
-     Traceback (most recent call last):
-     ...
-     ValueError: m_a can't be empty
+Passing non-lists.
+    >>> m_a = ([1, 2], [3, 4])
+    >>> m_b = [[1, 2], [3, 4]]
+    >>> matrix_mul(m_a, m_b)
+    Traceback (most recent call last):
+        ...
+    TypeError: m_a must be a list
 
-     >>> m_a = [[2, 0], [1, 2]]
-     >>> m_b = []
-     >>> print(matrix_mul(m_a, m_b))
-     Traceback (most recent call last):
-     ...
-     ValueError: m_b can't be empty
+    >>> m_a = "1"
+    >>> m_b = [[1, 2], [3, 4]]
+    >>> matrix_mul(m_a, m_b)
+    Traceback (most recent call last):
+        ...
+    TypeError: m_a must be a list
 
-     >>> m_a = [[2, 0], [1, 2]]
-     >>> m_b = [[]]
-     >>> print(matrix_mul(m_a, m_b))
-     Traceback (most recent call last):
-     ...
-     ValueError: m_b can't be empty
+Passing a non-list in any element of matrix_divided
+    >>> m_a = [2, [3, 4]]
+    >>> m_b = [[1, 2], [3, 4]]
+    >>> matrix_mul(m_a, m_b)
+    Traceback (most recent call last):
+        ...
+    TypeError: m_a must be a list of lists
 
-Test different sized lists in matrix:
-     >>> m_a = [[1, 2], [1, 2]]
-     >>> m_b = [[1, 2], [1, 2, 3, 4]]
-     >>> print(matrix_mul(m_a, m_b))
-     Traceback (most recent call last):
-     ...
-     TypeError: each row of m_b must should be of the same size
+Passing a non-list in any element of matrix_divided
+    >>> m_a = [[1, 2], [3, 4]]
+    >>> m_b = [1, 2, 3, 4]
+    >>> matrix_mul(m_a, m_b)
+    Traceback (most recent call last):
+        ...
+    TypeError: m_b must be a list of lists
 
-     >>> m_a = [[1, 2], [1, 2, 3, 4]]
-     >>> m_b = [[1, 2], [1, 2]]
-     >>> print(matrix_mul(m_a, m_b))
-     Traceback (most recent call last):
-     ...
-     TypeError: each row of m_a must should be of the same size
+    >>> m_a = [[1, 2], [3, 4]]
+    >>> m_b = [["1", "2"], ["3", "4"]]
+    >>> matrix_mul(m_a, m_b)
+    Traceback (most recent call last):
+        ...
+    TypeError: m_b should contain only integers or floats
 
-Test matrix with other data types:
-     >>> m_a = [["hey"], ["you"]]
-     >>> print(matrix_mul(m_a, m_a))
-     Traceback (most recent call last):
-     ...
-     TypeError: m_a should contain only integers or floats
+Passing an empty matrix.
+    >>> m_a = []
+    >>> m_b = [[1, 2], [3, 4]]
+    >>> matrix_mul(m_a, m_b)
+    Traceback (most recent call last):
+        ...
+    ValueError: m_a can't be empty
 
-     >>> m_a = (1, 2)
-     >>> m_b = [[1, 2], [1, 2]]
-     >>> print(matrix_mul(m_a, m_b))
-     Traceback (most recent call last):
-     ...
-     TypeError: m_a must be a list
+    >>> m_a = [[]]
+    >>> m_b = [[1, 2], [3, 4]]
+    >>> matrix_mul(m_a, m_b)
+    Traceback (most recent call last):
+        ...
+    ValueError: m_a can't be empty
+
+    >>> m_a = [[1, 2], [3, 4]]
+    >>> m_b = []
+    >>> matrix_mul(m_a, m_b)
+    Traceback (most recent call last):
+        ...
+    ValueError: m_b can't be empty
+
+If one element of those list of lists is not an integer or a float.
+    >>> m_a = [[1, "b"], [3, 4]]
+    >>> m_b = [[1, 2], [3, 4]]
+    >>> matrix_mul(m_a, m_b)
+    Traceback (most recent call last):
+        ...
+    TypeError: m_a should contain only integers or floats
+
+Passing None as a matrix.
+    >>> matrix_mul(None, None)
+    Traceback (most recent call last):
+    	...
+    TypeError: m_a must be a list
+
+    >>> matrix_mul([[3, 4]], None)
+    Traceback (most recent call last):
+        ...
+    TypeError: m_b must be a list
+
+Passing a matrix which its rows have different size.
+    >>> m_a = [[2, 2, 2], [4, 4, 4]]
+    >>> m_b = [[2], [3, 3]]
+    >>> matrix_mul(m_a, m_b)
+    Traceback (most recent call last):
+        ...
+    TypeError: each row of m_b must be of the same size
+
+    >>> m_a = [[1, 2], [3, 4, 5]]
+    >>> m_b = [[1, 2], [3, 4]]
+    >>> matrix_mul(m_a, m_b)
+    Traceback (most recent call last):
+        ...
+    TypeError: each row of m_a must be of the same size
+
+Passing mismatched matrices.
+    >>> m_a = [[1, 2, 3], [4, 5, 6]]
+    >>> m_b = [[1, 2], [3, 4,]]
+    >>> matrix_mul(m_a, m_b)
+    Traceback (most recent call last):
+        ...
+    ValueError: m_a and m_b can't be multiplied
+
+Passing one argument to matrix_mul
+    >>> matrix_mul([[1, 2]])
+    Traceback (most recent call last):
+        ...
+    TypeError: matrix_mul() missing 1 required positional argument: 'm_b'
+
+Passing no argument to matrix_mul.
+    >>> matrix_mul()
+    Traceback (most recent call last):
+        ...
+    TypeError: matrix_mul() missing 2 required positional arguments: 'm_a' and 'm_b'
+
+Passing more than two argument to matrix_mul.
+    >>> m_a = [[1, 2], [3, 4]]
+    >>> m_b = [[1, 2], [3, 4]]
+    >>> m_c = [[4, 5], [7, 8]]
+    >>> matrix_mul(m_a, m_b, m_c) #doctest: +ELLIPSIS
+    Traceback (most recent call last):
+        ...
+    TypeError: matrix_mul() takes 2 positional arguments but ...
