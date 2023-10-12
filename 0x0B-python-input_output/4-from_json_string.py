@@ -1,16 +1,17 @@
 #!/usr/bin/python3
-"""0x0B. Python - Input/Output, task 4. Append to a file """
+"""
+Module 6-from_json_string
+Contains function that returns python data structure from JSON string
+"""
 
 
-def append_write(filename="", text=""):
-    """Appends a string at the end of a text file (UTF8) and returns the
-number of characters added.
-
+def from_json_string(my_str):
+    """Returns python data structure from JSON string
     Args:
-        filename (str): name of file to be opened
-        text (str): chars to be written
-
+        my_str: json string representation
+    Return:
+        python object
     """
-    with open(filename, 'a', encoding='utf-8') as file:
-        chars_written = file.write(text)
-        return chars_written
+    import json
+
+    return json.loads(my_str)
