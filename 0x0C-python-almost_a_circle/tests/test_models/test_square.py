@@ -1,134 +1,257 @@
 #!/usr/bin/python3
-"""Defines a class TestSquareMethods"""
+"""
+    unit test for models/square.py
+"""
 
-
-from unittest.mock import patch
 import unittest
 import json
-from io import StringIO
-from models.base import Base
-from models.rectangle import Rectangle
 from models.square import Square
 
 
-class TestSquareMethods(unittest.TestCase):
-    """ Defines tests for Square class """
+class TestSquare(unittest.TestCase):
+    """
+        Testing square
+    """
 
     def setUp(self):
-        """ Method invoked for each test """
-        Base._Base__nb_objects = 0
+        """
+            Initialize an insatnce of square
+            With size only
+        """
+        self.sq = Square(20)
 
     def tearDown(self):
-        """ Cleans up after each test """
-        pass
+        """
+            Deleting created instance
+        """
+        del self.sq
 
-    def test_new_square(self):
-        """ Test new square """
-        s1 = Square(3)
-        s2 = Square(1, 2, 3, 4)
-        self.assertEqual(s1.size, 3)
-        self.assertEqual(s1.width, 3)
-        self.assertEqual(s1.x, 0)
-        self.assertEqual(s1.y, 0)
-        self.assertEqual(s1.id, 1)
-        self.assertEqual(s2.size, 1)
-        self.assertEqual(s2.width, 1)
-        self.assertEqual(s2.x, 2)
-        self.assertEqual(s2.y, 3)
-        self.assertEqual(s2.id, 4)
+    def test_size(self):
+        """
+            Testing square size getter
+        """
+        self.assertEqual(20, self.sq.width)
 
-    def test_attributes_1(self):
-        """ Test for width and x and y types"""
-        with self.assertRaisesRegex(TypeError, "width must be an integer"):
-            Square("1")
-        with self.assertRaisesRegex(TypeError, "x must be an integer"):
-            Square(1, "2")
-        with self.assertRaisesRegex(TypeError, "y must be an integer"):
-            Square(1, 2, "3")
+    def test_x(self):
+        """
+            Testing the x getter
+        """
+        self.sq.x = 2
+        self.assertEqual(2, self.sq.x)
+        self.assertEqual(0, self.sq.y)
 
-    def test_attributes_2(self):
-        """ Test for width and height ranges"""
-        with self.assertRaisesRegex(ValueError, "width must be > 0"):
-            Square(-1)
-            Square(0)
-        with self.assertRaisesRegex(ValueError, "x must be >= 0"):
-            Square(1, -2)
-        with self.assertRaisesRegex(ValueError, "y must be >= 0"):
-            Square(1, 2, -3)
+    def test_y(self):
+        """
+            Testing the y getter
+        """
+        self.sq.y = 2
+        self.assertEqual(2, self.sq.y)
+        self.assertEqual(0, self.sq.x)
 
-    def test_constructor_no_args(self):
-        """ Tests constructor with no args """
-        with self.assertRaises(TypeError) as e:
-            r = Square()
-        s = "__init__() missing 1 required positional argument: 'size'"
-        self.assertEqual(str(e.exception), s)
+    def test_square_id(self):
+        """
+            Testing the id of the square
+        """
+        sq1 = Square(1, 0, 0, 12)
+        self.assertEqual(12, sq1.id)
 
-    def test_C_constructor_many_args(self):
-        """ Tests constructor with many arguments """
-        with self.assertRaises(TypeError) as e:
-            r = Square(1, 2, 3, 4, 5)
-        s = "__init__() takes from 2 to 5 positional arguments but 6 \
-were given"
-        self.assertEqual(str(e.exception), s)
+    def test_size_str(self):
+        """
+            Testing wrong type for size: str
+        """
+        with self.assertRaises(TypeError):
+            sq1 = Square("s")
 
-    def test_is_Rectangle_instance(self):
-        """ Test Square is a Rectangle instance """
-        s1 = Square(1)
-        self.assertEqual(True, isinstance(s1, Rectangle))
+    def test_size_list(self):
+        """
+            Testing wrong type for size: list
+        """
+        with self.assertRaises(TypeError):
+            sq1 = Square([1, 2])
+
+    def test_size_bool(self):
+        """
+            Testing wrong type for size: boolean
+        """
+        with self.assertRaises(TypeError):
+            sq1 = Square(True)
+
+    def test_x_str(self):
+        """
+            Testing wrong type for x: str
+        """
+        with self.assertRaises(TypeError):
+            sq1 = Square(2, "x", 0)
+
+    def test_x_list(self):
+        """
+            Testing wrong type for x: list
+        """
+        with self.assertRaises(TypeError):
+            sq1 = Square(2, [1, 2], 8)
+
+    def test_x_bool(self):
+        """
+            Testing wrong type for x: boolean
+        """
+        with self.assertRaises(TypeError):
+            sq1 = Square(2, True, 9)
+
+    def test_y_str(self):
+        """
+            Testing wrong type for y: str
+        """
+        with self.assertRaises(TypeError):
+            sq1 = Square(2, 0, "y")
+
+    def test_y_list(self):
+        """
+            Testing wrong type for y: list
+        """
+        with self.assertRaises(TypeError):
+            sq1 = Square(2, 6, [1, 2])
+
+    def test_y_bool(self):
+        """
+            Testing wrong type for y: boolean
+        """
+        with self.assertRaises(TypeError):
+            sq1 = Square(2, 9, True)
+
+    def test_size_negative(self):
+        """
+            Testing negative value for size
+        """
+        with self.assertRaises(ValueError):
+            sq1 = Square(-2)
+
+    def test_size_zero(self):
+        """
+            Testing zero value for size
+        """
+        with self.assertRaises(ValueError):
+            sq1 = Square(0)
+
+    def test_x_negative(self):
+        """
+            Testing negative value for x
+        """
+        with self.assertRaises(ValueError):
+            sq1 = Square(2, -1, 0)
+
+    def test_y_negative(self):
+        """
+            Testing negative value for y
+        """
+        with self.assertRaises(ValueError):
+            sq1 = Square(2, 4, -7)
 
     def test_area(self):
-        """ Test area method """
-        s1 = Square(4)
-        self.assertEqual(s1.area(), 16)
+        """
+            Testing for area()
+        """
+        sq1 = Square(20)
+        self.assertEqual(sq1.area(), 20 * 20)
 
-    def test_area_2(self):
-        """ Test area method after modifying size """
-        r1 = Square(4)
-        self.assertEqual(r1.area(), 16)
-        r1.size = 9
-        self.assertEqual(r1.area(), 81)
+    def test_str_overload(self):
+        """
+            Testing the str overload
+        """
+        sq = Square(10, 2, 3, 9)
+        self.assertEqual(sq.__str__(), "[Square] (9) 2/3 - 10")
 
-    def test_area_no_args(self):
-        """ Test area method with no arguments"""
-        r = Square(5)
-        with self.assertRaises(TypeError) as e:
-            Square.area()
-        s = "area() missing 1 required positional argument: 'self'"
-        self.assertEqual(str(e.exception), s)
+    def test_update(self):
+        """
+            Test update function with *args
+        """
+        sq1 = Square(1)
+        sq1.update(2, 4)
+        self.assertEqual(sq1.__str__(), "[Square] (2) 0/0 - 4")
 
-    def test_load_from_file(self):
-        """ Test load JSON file """
-        load_file = Square.load_from_file()
-        self.assertEqual(load_file, load_file)
+    def test_update_kwargs(self):
+        """
+            Test update() function with **kwargs
+        """
+        sq1 = Square(1)
+        sq1.update(size=7, y=1, id=12)
+        self.assertEqual(sq1.__str__(), "[Square] (12) 0/1 - 7")
 
-    def test_basic_display(self):
-        """ Test display without x and y """
-        s1 = Square(6)
-        result = "######\n######\n######\n######\n######\n######\n"
-        with patch('sys.stdout', new=StringIO()) as str_out:
-            s1.display()
-            self.assertEqual(str_out.getvalue(), result)
+    def test_update_both(self):
+        """
+            Test update() with both args and kwargs
+        """
+        sq1 = Square(1)
+        sq1.update(2, 4, **{'x': 3, 'y': 4})
+        self.assertEqual(sq1.__str__(), "[Square] (2) 0/0 - 4")
 
-    def test_display_no_args(self):
-        """ Test display method with no arguments """
-        r = Square(9)
-        with self.assertRaises(TypeError) as e:
-            Square.display()
-        s = "display() missing 1 required positional argument: 'self'"
-        self.assertEqual(str(e.exception), s)
+    def test_create_dict_equal(self):
+        """
+            Testing creating square is not equal
+        """
+        sq1 = Square(1, 3, 5, 6)
+        sq1_dict = sq1.to_dictionary()
+        sq2 = Square.create(**sq1_dict)
+        self.assertNotEqual(sq1, sq2)
 
-    def test_str(self):
-        """ Test __str__ return value """
-        s1 = Square(3, 1, 3)
-        result = "[Square] (1) 1/3 - 3\n"
-        with patch('sys.stdout', new=StringIO()) as str_out:
-            print(s1)
-            self.assertEqual(str_out.getvalue(), result)
+    def test_create_dict_is(self):
+        """
+            Testing create squaree is (sq1 is sq2)
+        """
+        sq1 = Square(1, 3, 5, 6)
+        sq1_dict = sq1.to_dictionary()
+        sq2 = Square.create(**sq1_dict)
+        self.assertIsNot(sq1, sq2)
 
-    def test_str_no_args(self):
-        """ Tests __str__ method with no arguments """
-        r = Square(5, 2)
-        with self.assertRaises(TypeError) as e:
-            Square.__str__()
-        s = "__str__() missing 1 required positional argument: 'self'"
-        self.assertEqual(str(e.exception), s)
+    def test_save_to_file_none(self):
+        """
+            Testing save to file none
+        """
+        Square.save_to_file(None)
+        with open("Square.json", "r") as f:
+            content = json.load(f)
+            self.assertEqual(content, [])
+
+    def test_save_to_file_empty(self):
+        """
+            Testing save to file empty list
+        """
+        Square.save_to_file([])
+        with open("Square.json", "r") as f:
+            content = json.load(f)
+            self.assertEqual(content, [])
+
+    def test_save_to_file_rect(self):
+        """
+            Testing save to file with proper input
+        """
+        Square.save_to_file([Square(1, 3, 4, 5)])
+        with open("Square.json", "r") as f:
+            content = f.read()
+            self.assertEqual(json.loads(content), [{"id": 5,
+                                                    "size": 1,
+                                                    "x": 3, "y": 4}])
+
+    def test_save_to_file_noargs(self):
+        """
+            Testing save to file with no arguments
+        """
+        with self.assertRaises(TypeError):
+            Square.save_to_file()
+
+    def test_save_to_file_type(self):
+        """
+            Testing save to file , format saved in
+        """
+        Square.save_to_file([Square(1, 3, 4, 5)])
+        with open("Square.json", "r") as f:
+            content = f.read()
+            self.assertEqual(str, type(content))
+
+    def test_load_from_file_noexist(self):
+        """
+            Testing load from file that doesnt exist
+        """
+        sq1 = Square(1)
+        Square.save_to_file([sq1])
+        list_output = Square.load_from_file()
+        self.assertEqual(sq1.width, list_output[0].size)
