@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """
-This script adds the State object
-`Louisiana` to the database `hbtn_0e_6_usa`.
+This script prints the State object id
+with the name passed as argument
+from the database `hbtn_0e_6_usa`.
 """
 
 from sys import argv
@@ -21,9 +22,9 @@ if __name__ == "__main__":
     Session = sessionmaker(bind=engine)
 
     session = Session()
+    instance = session.query(State).filter(State.name == argv[4]).first()
 
-    lou_state = State(name='Louisiana')
-    session.add(lou_state)
-    session.commit()
-    print('{0}'.format(lou_state.id))
-    session.close()
+    if instance is None:
+        print('Not found')
+    else:
+        print('{0}'.format(instance.id))
